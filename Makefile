@@ -2,7 +2,7 @@ CC= gcc
 AR=ar
 FLAGS= -Wall
 
-all: isort txtfind
+make all: isort txtfind
 
 isort: isort.o
 	$(CC) $(FLAGS) -o isort isort.o
