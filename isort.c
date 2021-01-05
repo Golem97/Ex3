@@ -13,15 +13,13 @@ void shift_element(int*, int);
 
     int f = 0, arr[SIZE];
 
-    //TODO: replace scanf with fgets ?
-
     while (scanf("%d", arr + f) && f < SIZE) {
         f++;
         char ch = fgetc(stdin);
-        if (ch == 0x0A) // If Enter is pressed
-        {
-            break;
-        }
+  //      if (ch == 0x0A) // If Enter is pressed
+   //     {
+   //         break;
+  //      }
     }
 
     insertionsort(arr, f);

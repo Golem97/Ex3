@@ -3,6 +3,7 @@
 
 #define LINE 256
 #define WORD 30
+#define MAXLINE 250
 
 int getMyline(char[]);
 
@@ -16,18 +17,26 @@ void print_similar_words(char *);
 
 int levenshtein(const char *, int, const char *, int);
 
+int getword(char s[]);
+
+
 int main() {
 
-    // print_lines("cat");
-    print_similar_words("cat");
+char word[WORD];
+char option;
+getword(word);
 
-//Levenstein test
-//char* s= "cat";
-//char* t= "cats";
+scanf("%c", &option);
 
-//int num= levenshtein(s,strlen(s),t,strlen(t));
-//printf("\nnum = %d\n",num);
+switch(option){
+    case 'a':
+        print_lines(word);
+        break;
 
+    case 'b':
+        print_similar_words(word);
+        break;
+}
     return 0;
 }
 
@@ -59,19 +68,60 @@ int getMyline(char s[]) {
 }
 
 /**
+ * Gets an input word from the keyboard and stores it in w. Also replaces '\n' at the end by '\0'
+ * @param s
+ * @return number of successfull inputs
+ */
+int getword(char w[]){
+
+    int i=0;
+    char c;
+    scanf("%c",&c);
+    while (i<WORD && c != '\0' && c!='\n'&& c!='\t' && c!=' ' && c!= '\r')
+    {
+
+        w[i]=c;
+        i++;
+        scanf("%c",&c);
+
+    }
+
+    w[i]='\0';
+
+    return i;
+}
+
+
+/**
 * prints only the lines of the text where to full word str is
 * @param str
 */
-void print_lines(char *str) {
-
+void print_lines(char * str)
+{
+ 	int i=0;
     char line[LINE];
-    while (getMyline(line) != EOF) {  //while EOF not reached
+   
+//pass through all lines in input
+    while(i<MAXLINE)
+    {
 
-        if (substring(line, str)) { //if str is contained in word
-            printf("\n%s", line); //print the whole line
-        }
+    //get a line from the text.
+    getMyline(line);
+
+        //if str is contained in line
+    if(substring(line,str))
+    {
+        //then print the whole sentence 
+        printf("%s\n",line);
     }
+
+    i++;      
+
+    }
+
 }
+
+
 
 /**
  *
@@ -117,28 +167,17 @@ void print_similar_words(char *str) {
 
         char* pch;
         char* copy;
-        char* positionLast = NULL;
+ 
 
         copy = strdup(line);
-        pch = strtok(copy," \t");
+        pch = strtok(copy," \t\r");
 
         while(pch != NULL){
             if(similar(pch,str,1)) { //if str and pch are similar by 1 letter
                 printf("%s\n", pch);
             }
 
-            positionLast = strchr(pch, '\n');
-
-            if(positionLast != NULL) { //if last word of the line
-                char* last[WORD];
-                strncpy((char*)last,pch,strlen(pch)-2); //get rid of the 2 last letters
-
-                if(similar((char*)last,str,1)) { //if str and last are similar by 1 letter
-                    printf("%s",pch);
-                }
-            }
-
-            pch = strtok(NULL, " \t");
+            pch = strtok(NULL, " \t\r");
         }
     }
 }
